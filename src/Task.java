@@ -1,31 +1,50 @@
-import java.util.ArrayList;
-
 public class Task {
-    protected String name;
-    protected String description;
     protected int id;
+    protected String title;
+    protected String description;
     protected Status status;
 
-    public Task(String name, String description, int id, Status status) {
-        this.name = name;
-        this.description = description;
+    public Task(int id, String title, String description, Status status) {
         this.id = id;
+        this.title = title;
+        this.description = description;
         this.status = status;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public int getId() {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public Status getStatus() {
         return status;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", status=" + status +
+                '}';
     }
 }
