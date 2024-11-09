@@ -1,3 +1,8 @@
+package io.feelgood.taskman;
+
+import io.feelgood.taskman.model.*;
+import io.feelgood.taskman.service.*;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -6,12 +11,12 @@ public class Main {
         TaskManager manager = new TaskManager();
 
         // Создание задач
-        manager.addTask("Переезд", "Собрать коробки и упаковать вещи", Status.NEW);
+        manager.addTask(new Task(manager.generateId(),"Переезд", "Собрать коробки и упаковать вещи", Status.NEW));
 
         // Создание эпиков и подзадач
-        manager.addEpic("Важный эпик 1", "Завершить проект");
-        manager.addSubtask("Подготовка к задаче", "Собрать команду", Status.IN_PROGRESS, 2);
-        manager.addSubtask("Разработка", "Начать работу над проектом", Status.NEW, 2);
+        manager.addEpic(new Epic(manager.generateId(),"Важный эпик 1", "Завершить проект"));
+        manager.addSubtask(new Subtask(manager.generateId(),"Подготовка к задаче", "Собрать команду", Status.IN_PROGRESS, 2));
+        manager.addSubtask(new Subtask(manager.generateId(),"Разработка", "Начать работу над проектом", Status.NEW, 2));
 
         // Проверка работы менеджера
         System.out.println("Все задачи: " + manager.getAllTasks());

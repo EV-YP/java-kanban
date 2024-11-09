@@ -1,3 +1,7 @@
+package io.feelgood.taskman.model;
+
+import io.feelgood.taskman.service.Status;
+
 public class Task {
     protected int id;
     protected String title;
@@ -27,14 +31,6 @@ public class Task {
         return status;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public void setStatus(Status status) {
         this.status = status;
     }
@@ -44,6 +40,7 @@ public class Task {
         return "Task{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
     }
