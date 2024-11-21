@@ -2,6 +2,8 @@ package io.feelgood.taskman.model;
 
 import io.feelgood.taskman.service.Status;
 
+import java.util.Objects;
+
 public class Task {
     protected int id;
     protected String title;
@@ -13,6 +15,22 @@ public class Task {
         this.title = title;
         this.description = description;
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id &&
+                title.equals(task.title) &&
+                description.equals(task.description) &&
+                status == task.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, status);
     }
 
     public int getId() {

@@ -29,7 +29,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "io.feelgood.taskman.model.Epic{" +
+        return "Epic{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", status=" + status +
