@@ -144,9 +144,33 @@ public class InMemoryTaskManagerTest {
         assertEquals(2, taskManager.getSubtasksByEpicId(epic.getId()).size(), "Эпик должен содержать две подзадачи.");
     }
 
-    // Тест обновления статуса эпика на основе подзадач
+    // Тест обновления статуса эпика до NEW на основе подзадач
     @Test
-    void shouldUpdateEpicStatusBasedOnSubtasks() {
+    void shouldUpdateEpicStatusToNewBasedOnSubtasks() {
+        Epic epic = new Epic(taskManager.generateId(), "Эпик 1", "Описание эпика");
+        taskManager.addEpic(epic);
+        Subtask subtask1 = new Subtask(taskManager.generateId(), "Сабтаск 1", "Описание 1", Status.NEW, epic.getId());
+        Subtask subtask2 = new Subtask(taskManager.generateId(), "Сабтаск 2", "Описание 2", Status.NEW, epic.getId());
+        taskManager.addSubtask(subtask1);
+        taskManager.addSubtask(subtask2);
+        assertEquals(Status.NEW, epic.getStatus(), "Статус эпика должен быть DONE, если все подзадачи выполнены.");
+    }
+
+    // Тест обновления статуса эпика до IN_PROGRESS на основе подзадач
+    @Test
+    void shouldUpdateEpicStatusToInProgressBasedOnSubtasks() {
+        Epic epic = new Epic(taskManager.generateId(), "Эпик 1", "Описание эпика");
+        taskManager.addEpic(epic);
+        Subtask subtask1 = new Subtask(taskManager.generateId(), "Сабтаск 1", "Описание 1", Status.NEW, epic.getId());
+        Subtask subtask2 = new Subtask(taskManager.generateId(), "Сабтаск 2", "Описание 2", Status.IN_PROGRESS, epic.getId());
+        taskManager.addSubtask(subtask1);
+        taskManager.addSubtask(subtask2);
+        assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Статус эпика должен быть DONE, если все подзадачи выполнены.");
+    }
+
+    // Тест обновления статуса эпика до DONE на основе подзадач
+    @Test
+    void shouldUpdateEpicStatusToDoneBasedOnSubtasks() {
         Epic epic = new Epic(taskManager.generateId(), "Эпик 1", "Описание эпика");
         taskManager.addEpic(epic);
         Subtask subtask1 = new Subtask(taskManager.generateId(), "Сабтаск 1", "Описание 1", Status.DONE, epic.getId());

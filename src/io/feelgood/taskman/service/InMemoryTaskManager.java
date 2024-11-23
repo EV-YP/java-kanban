@@ -115,7 +115,9 @@ public class InMemoryTaskManager implements TaskManager {
             if (epic != null) {
                 epic.removeSubtask(oldSubtask);
                 epic.addSubtask(subtask);
+                if (!oldSubtask.getStatus().equals(subtask.getStatus())){
                 updateEpicStatus(subtask.getEpicId());
+                }
             }
         } else {
             System.out.println("Subtask с id " + subtask.getId() + " не найден.");
@@ -208,7 +210,7 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
         } else {
-            System.out.println("Epic with id " + epicId + " not found.");
+            System.out.println("Epic с id " + epicId + " не найден.");
         }
         return epicSubtasks;
     }
