@@ -116,7 +116,7 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.removeSubtask(oldSubtask);
                 epic.addSubtask(subtask);
                 if (!oldSubtask.getStatus().equals(subtask.getStatus())) {
-                updateEpicStatus(subtask.getEpicId());
+                    updateEpicStatus(subtask.getEpicId());
                 }
             }
         } else {

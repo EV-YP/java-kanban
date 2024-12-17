@@ -2,6 +2,7 @@ package io.feelgood.taskman.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.feelgood.taskman.model.*;
@@ -133,7 +134,7 @@ public class InMemoryTaskManagerTest {
         Task task = new Task(1, "Оригинальный Таск", "Описание", Status.NEW);
         taskManager.addTask(task);
         taskManager.getTask(task.getId());
-        taskManager.updateTask(new Task (1, "Оригинальный Таск", "Описание", Status.IN_PROGRESS));
+        taskManager.updateTask(new Task(1, "Оригинальный Таск", "Описание", Status.IN_PROGRESS));
         List<Task> history = taskManager.getHistory();
         assertEquals(Status.NEW, history.getFirst().getStatus(), "Статус задачи в истории не должен измениться" +
                 " после изменения оригинала.");
