@@ -36,6 +36,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
 
         if (task == null) { // проверяем, что задача не null
+            return;
         } else {
             int taskId = task.getId();
             // удаляем задачу из истории, если задачу уже просматривали
