@@ -1,6 +1,10 @@
 package io.feelgood.taskman.service;
 
 import io.feelgood.taskman.model.*;
+// добавлен код логирования ошибок
+// код закоммичен, поскольку не проходит автотесты Яндекса на гитхабе (package org.slf4j does not exist)
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -8,11 +12,13 @@ import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
 
+//    private static final Logger logger = LoggerFactory.getLogger(InMemoryTaskManager.class);
+
     int idCounter = 1;
     final HashMap<Integer, Task> tasks = new HashMap<>();
     final HashMap<Integer, Epic> epics = new HashMap<>();
     final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    HistoryManager tasksInHistory = Managers.getDefaultHistory();
+    HistoryManager taskHistoryMap = Managers.getDefaultHistory();
 
     @Override
     public int generateId() {
@@ -58,19 +64,19 @@ public class InMemoryTaskManager implements TaskManager {
     // получаем задачи по идентификатору и записываем в список просмотренных задач
     @Override
     public Task getTask(int id) {
-        tasksInHistory.add(tasks.get(id));
+        taskHistoryMap.add(tasks.get(id));
         return tasks.get(id);
     }
 
     @Override
     public Epic getEpic(int id) {
-        tasksInHistory.add(epics.get(id));
+        taskHistoryMap.add(epics.get(id));
         return epics.get(id);
     }
 
     @Override
     public Subtask getSubtask(int id) {
-        tasksInHistory.add(subtasks.get(id));
+        taskHistoryMap.add(subtasks.get(id));
         return subtasks.get(id);
     }
 
@@ -91,8 +97,8 @@ public class InMemoryTaskManager implements TaskManager {
             subtasks.put(subtask.getId(), subtask);
             epics.get(subtask.getEpicId()).addSubtask(subtask);
             updateEpicStatus(subtask.getEpicId());
-        } else {
-            System.out.println("Epic с id " + subtask.getEpicId() + " не найден.");
+//        } else {
+//            logger.warn("Epic с id {} не найден.", subtask.getEpicId());
         }
     }
 
@@ -101,8 +107,8 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
-        } else {
-            System.out.println("Task с id " + task.getId() + " не найден.");
+//        } else {
+//            logger.warn("Task с id {} не найден.", task.getId());
         }
     }
 
@@ -115,12 +121,12 @@ public class InMemoryTaskManager implements TaskManager {
             if (epic != null) {
                 epic.removeSubtask(oldSubtask);
                 epic.addSubtask(subtask);
-                if (!oldSubtask.getStatus().equals(subtask.getStatus())){
-                updateEpicStatus(subtask.getEpicId());
+                if (!oldSubtask.getStatus().equals(subtask.getStatus())) {
+                    updateEpicStatus(subtask.getEpicId());
                 }
             }
-        } else {
-            System.out.println("Subtask с id " + subtask.getId() + " не найден.");
+//        } else {
+//            logger.warn("Subtask с id {} не найден.", subtask.getId());
         }
     }
 
@@ -129,8 +135,8 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(id);
         if (epic != null) {
             updateEpicStatus(id);
-        } else {
-            System.out.println("Epic с id " + id + " не найден.");
+//        } else {
+//            logger.warn("Epic с id {} не найден.", id);
         }
     }
 
@@ -165,9 +171,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTask(int id) {
         if (tasks.containsKey(id)) {
+            taskHistoryMap.remove(id);
             tasks.remove(id);
-        } else {
-            System.out.println("Task с id " + id + " не найден.");
+//        } else {
+//            logger.warn("Task с id {} не найден.", id);
         }
     }
 
@@ -175,11 +182,13 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpic(int id) {
         if (epics.containsKey(id)) {
             Epic epic = epics.remove(id);
+            taskHistoryMap.remove(id);
             for (int subtaskId : epic.getSubtaskIds()) {
+                taskHistoryMap.remove(subtaskId);
                 subtasks.remove(subtaskId);
             }
-        } else {
-            System.out.println("Epic с id " + id + " не найден.");
+//        } else {
+//            logger.warn("Epic с id {} не найден.", id);
         }
     }
 
@@ -189,11 +198,12 @@ public class InMemoryTaskManager implements TaskManager {
         if (subtask != null) {
             Epic epic = epics.get(subtask.getEpicId());
             if (epic != null) {
+                taskHistoryMap.remove(id);
                 epic.removeSubtask(subtask);
                 updateEpicStatus(subtask.getEpicId());
             }
-        } else {
-            System.out.println("Subtask с id " + id + " не найден.");
+//        } else {
+//            logger.warn("Subtask с id {} не найден.", id);
         }
     }
 
@@ -209,8 +219,8 @@ public class InMemoryTaskManager implements TaskManager {
                     epicSubtasks.add(subtask);
                 }
             }
-        } else {
-            System.out.println("Epic с id " + epicId + " не найден.");
+//        } else {
+//            logger.warn("Epic с id {} не найден.", epicId);
         }
         return epicSubtasks;
     }
@@ -218,6 +228,6 @@ public class InMemoryTaskManager implements TaskManager {
     // Используем HistoryManager для получения истории просмотренных задач
     @Override
     public List<Task> getHistory() {
-        return tasksInHistory.getHistory();
+        return taskHistoryMap.getHistory();
     }
 }
