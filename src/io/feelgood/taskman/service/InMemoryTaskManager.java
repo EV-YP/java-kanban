@@ -1,8 +1,10 @@
 package io.feelgood.taskman.service;
 
 import io.feelgood.taskman.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+// добавлен код логирования ошибок
+// код закоммичен, поскольку не проходит автотесты Яндекса на гитхабе (package org.slf4j does not exist)
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(InMemoryTaskManager.class);
+//    private static final Logger logger = LoggerFactory.getLogger(InMemoryTaskManager.class);
 
     int idCounter = 1;
     final HashMap<Integer, Task> tasks = new HashMap<>();
@@ -95,8 +97,8 @@ public class InMemoryTaskManager implements TaskManager {
             subtasks.put(subtask.getId(), subtask);
             epics.get(subtask.getEpicId()).addSubtask(subtask);
             updateEpicStatus(subtask.getEpicId());
-        } else {
-            logger.warn("Epic с id {} не найден.", subtask.getEpicId());
+//        } else {
+//            logger.warn("Epic с id {} не найден.", subtask.getEpicId());
         }
     }
 
@@ -105,8 +107,8 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
-        } else {
-            logger.warn("Task с id {} не найден.", task.getId());
+//        } else {
+//            logger.warn("Task с id {} не найден.", task.getId());
         }
     }
 
@@ -123,8 +125,8 @@ public class InMemoryTaskManager implements TaskManager {
                     updateEpicStatus(subtask.getEpicId());
                 }
             }
-        } else {
-            logger.warn("Subtask с id {} не найден.", subtask.getId());
+//        } else {
+//            logger.warn("Subtask с id {} не найден.", subtask.getId());
         }
     }
 
@@ -133,8 +135,8 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(id);
         if (epic != null) {
             updateEpicStatus(id);
-        } else {
-            logger.warn("Epic с id {} не найден.", id);
+//        } else {
+//            logger.warn("Epic с id {} не найден.", id);
         }
     }
 
@@ -171,8 +173,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (tasks.containsKey(id)) {
             taskHistoryMap.remove(id);
             tasks.remove(id);
-        } else {
-            logger.warn("Task с id {} не найден.", id);
+//        } else {
+//            logger.warn("Task с id {} не найден.", id);
         }
     }
 
@@ -185,8 +187,8 @@ public class InMemoryTaskManager implements TaskManager {
                 taskHistoryMap.remove(subtaskId);
                 subtasks.remove(subtaskId);
             }
-        } else {
-            logger.warn("Epic с id {} не найден.", id);
+//        } else {
+//            logger.warn("Epic с id {} не найден.", id);
         }
     }
 
@@ -200,8 +202,8 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.removeSubtask(subtask);
                 updateEpicStatus(subtask.getEpicId());
             }
-        } else {
-            logger.warn("Subtask с id {} не найден.", id);
+//        } else {
+//            logger.warn("Subtask с id {} не найден.", id);
         }
     }
 
@@ -217,8 +219,8 @@ public class InMemoryTaskManager implements TaskManager {
                     epicSubtasks.add(subtask);
                 }
             }
-        } else {
-            logger.warn("Epic с id {} не найден.", epicId);
+//        } else {
+//            logger.warn("Epic с id {} не найден.", epicId);
         }
         return epicSubtasks;
     }
